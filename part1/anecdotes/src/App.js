@@ -3,6 +3,10 @@ import React, { useState } from "react";
 const Buttons = ({ handler, text }) => {
   return <button onClick={handler}>{text}</button>;
 };
+const ShowMostVoted = ({ arrVotes, anecdotes }) => {
+  let mostVoted = arrVotes.indexOf(Math.max(...arrVotes));
+  return <div>{anecdotes[mostVoted]}</div>;
+};
 
 const App = () => {
   const anecdotes = [
@@ -22,21 +26,16 @@ const App = () => {
     )
   );
 
-  Array.apply(null, new Array(10)).map(Number.prototype.valueOf, 0);
-
   const getRandomSelected = () => {
     return Math.round(Math.random() * (anecdotes.length - 1));
   };
+
+  const setToSelected = () => setSelected(getRandomSelected);
 
   const assignVote = () => {
     let copy = [...arrVotes];
     copy[selected] += 1;
     setVotes(copy);
-  };
-
-  const ShowMostVoted = () => {
-    let mostVoted = arrVotes.indexOf(Math.max(...arrVotes));
-    return <div>{anecdotes[mostVoted]}</div>;
   };
 
   return (
@@ -45,12 +44,9 @@ const App = () => {
       {anecdotes[selected]}
       <p>has {arrVotes[selected]} votes </p>
       <Buttons handler={assignVote} text="Vote"></Buttons>
-      <Buttons
-        handler={() => setSelected(getRandomSelected)}
-        text="Next anecdote"
-      ></Buttons>
+      <Buttons handler={setToSelected} text="Next anecdote"></Buttons>
       <h1>Anecdote with most votes</h1>
-      <ShowMostVoted></ShowMostVoted>
+      <ShowMostVoted arrVotes={arrVotes} anecdotes={anecdotes}></ShowMostVoted>
     </div>
   );
 };
